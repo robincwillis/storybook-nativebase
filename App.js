@@ -1,4 +1,7 @@
 import React from "react";
+import { Platform, StatusBar, View } from "react-native";
+import { REACT_APP_STORYBOOK }  from '@env';
+
 import {
   Text,
   Link,
@@ -12,19 +15,32 @@ import {
   VStack,
   Box,
 } from "native-base";
+
+import StorybookUIRoot from "./.ondevice/Storybook";
 import NativeBaseIcon from "./components/NativeBaseIcon";
-import { Platform } from "react-native";
+
+
+const Storybook = () => (
+   <View
+      style={{
+        flex: 1,
+        marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      }}
+    >
+      <StorybookUIRoot />
+    </View>
+)
 
 // Define the config
-const config = {
+const NB_CONFIG = {
   useSystemColorMode: false,
   initialColorMode: "dark",
 };
 
 // extend the theme
-export const theme = extendTheme({ config });
+export const theme = extendTheme({ NB_CONFIG });
 
-export default function App() {
+const App = () => {
   return (
     <NativeBaseProvider>
       <Center
@@ -35,7 +51,7 @@ export default function App() {
       >
         <VStack space={5} alignItems="center">
           <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
+          <Heading size="lg">Welcome to Tender Base</Heading>
           <HStack space={2} alignItems="center">
             <Text>Edit</Text>
             <Box
@@ -66,6 +82,7 @@ export default function App() {
   );
 }
 
+
 // Color Switch Component
 function ToggleDarkMode() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -83,3 +100,6 @@ function ToggleDarkMode() {
     </HStack>
   );
 }
+
+
+export default REACT_APP_STORYBOOK === 'true' ? Storybook : App
